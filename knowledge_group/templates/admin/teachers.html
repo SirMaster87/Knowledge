@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Teachers - Admin{% endblock %}
+{% block content %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('teachers') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Teachers</div>
+        <div class="dashboard-subtitle">Manage teaching faculty</div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-plus" style="color:var(--success)"></i> Add Teacher</h3></div>
+            <div class="card-body">
+                <form method="POST">
+                    <input type="hidden" name="action" value="add">
+                    <div class="form-row">
+                        <div class="form-group"><label>Name *</label><input type="text" name="name" required placeholder="Teacher's full name"></div>
+                        <div class="form-group"><label>Subject *</label><input type="text" name="subject" required placeholder="e.g. Mathematics"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Qualification</label><input type="text" name="qualification" placeholder="e.g. M.Sc. Mathematics, B.Ed."></div>
+                        <div class="form-group"><label>Experience (years)</label><input type="number" name="experience" placeholder="10"></div>
+                    </div>
+                    <div class="form-group"><label>Bio</label><textarea name="bio" rows="2" placeholder="Brief bio about the teacher..."></textarea></div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Add Teacher</button>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>All Teachers</h3></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Subject</th><th>Qualification</th><th>Experience</th><th>Status</th></tr></thead>
+                    <tbody>
+                    {% for t in teachers %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ t.name }}</strong></td>
+                        <td>{{ t.subject }}</td>
+                        <td>{{ t.qualification or '—' }}</td>
+                        <td>{{ t.experience }}+ years</td>
+                        <td><span class="badge {{ 'badge-success' if t.is_active else 'badge-secondary' }}">{{ 'Active' if t.is_active else 'Inactive' }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:32px">No teachers added yet.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

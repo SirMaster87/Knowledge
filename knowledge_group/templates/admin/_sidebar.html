@@ -1,0 +1,19 @@
+{% macro admin_sidebar(active='') %}
+<aside class="sidebar">
+    <div class="sidebar-header"><div class="user-name">{{ session.name }}</div><div class="user-role" style="background:rgba(26,35,126,0.1);color:var(--primary)">Admin</div></div>
+    <ul class="sidebar-nav">
+        <div class="sidebar-section-title">Overview</div>
+        <li><a href="{{ url_for('admin_dashboard') }}" {% if active=='dashboard' %}class="active"{% endif %}><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <div class="sidebar-section-title">Management</div>
+        <li><a href="{{ url_for('admin_students') }}" {% if active=='students' %}class="active"{% endif %}><i class="fas fa-user-graduate"></i> Students</a></li>
+        <li><a href="{{ url_for('admin_courses') }}" {% if active=='courses' %}class="active"{% endif %}><i class="fas fa-book"></i> Courses</a></li>
+        <li><a href="{{ url_for('admin_teachers') }}" {% if active=='teachers' %}class="active"{% endif %}><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+        <li><a href="{{ url_for('admin_enrollments') }}" {% if active=='enrollments' %}class="active"{% endif %}><i class="fas fa-clipboard-list"></i> Enrollments {% if pending_requests_count %}<span class="badge badge-danger" style="margin-left:auto">{{ pending_requests_count }}</span>{% endif %}</a></li>
+        <li><a href="{{ url_for('admin_results') }}" {% if active=='results' %}class="active"{% endif %}><i class="fas fa-chart-bar"></i> Results</a></li>
+        <li><a href="{{ url_for('admin_announcements') }}" {% if active=='announcements' %}class="active"{% endif %}><i class="fas fa-bullhorn"></i> Announcements</a></li>
+        <li><a href="{{ url_for('admin_messages') }}" {% if active=='messages' %}class="active"{% endif %}><i class="fas fa-envelope"></i> Messages</a></li>
+        <div class="sidebar-section-title">Account</div>
+        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+</aside>
+{% endmacro %}

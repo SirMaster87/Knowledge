@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Enroll Now - Knowledge Group Tuition{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Enroll <em>Now</em></h1>
+    <p>Take the first step towards academic excellence</p>
+    <div class="breadcrumb"><a href="/">Home</a> <i class="fas fa-chevron-right"></i> Enroll</div>
+</div>
+<section class="enroll-section">
+    <div class="container">
+        <div class="enroll-grid">
+            <div class="enroll-info">
+                <h2>How <em>Enrollment</em> Works</h2>
+                <p>Joining Knowledge Group is simple. Fill the form and we'll take care of the rest.</p>
+                <div class="enroll-steps">
+                    <div class="enroll-step"><div class="step-num">1</div><div><strong>Submit Form</strong><span>Fill in the enrollment form with your details</span></div></div>
+                    <div class="enroll-step"><div class="step-num">2</div><div><strong>Counselling Call</strong><span>Our team calls you within 24 hours for a free counselling session</span></div></div>
+                    <div class="enroll-step"><div class="step-num">3</div><div><strong>Batch Allocation</strong><span>We assign the most suitable batch based on your schedule</span></div></div>
+                    <div class="enroll-step"><div class="step-num">4</div><div><strong>Start Learning</strong><span>Attend your first class (first class is FREE!)</span></div></div>
+                </div>
+                <div style="margin-top:28px;background:rgba(255,111,0,0.08);border:1px solid rgba(255,111,0,0.2);border-radius:var(--radius-sm);padding:16px;">
+                    <strong style="color:var(--accent);font-size:14px;"><i class="fas fa-gift"></i> First Class FREE!</strong>
+                    <p style="font-size:13px;color:var(--text-muted);margin-top:6px;">Try any class for free before you commit. No obligations.</p>
+                </div>
+            </div>
+            <div class="form-card">
+                <h2>Enrollment <em>Form</em></h2>
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Student's Full Name *</label>
+                            <input type="text" name="name" required placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Current Grade/Std *</label>
+                            <select name="grade" required>
+                                <option value="">Select Grade</option>
+                                <option>Std 6</option><option>Std 7</option><option>Std 8</option>
+                                <option>Std 9</option><option>Std 10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" name="phone" required placeholder="+91 XXXXX XXXXX">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Course *</label>
+                        <select name="course_id" required>
+                            <option value="">Select Course</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}">{{ course.name }} ({{ course.grade_level }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Parent / Guardian Name</label>
+                            <input type="text" name="parent_name" placeholder="Parent's name">
+                        </div>
+                        <div class="form-group">
+                            <label>Parent's Phone</label>
+                            <input type="tel" name="parent_phone" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:8px">
+                        <i class="fas fa-paper-plane"></i> Submit Enrollment Request
+                    </button>
+                    <p style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:12px;">We will contact you within 24 hours to confirm your enrollment.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

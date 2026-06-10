@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}About Us - Knowledge Group Tuition{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>About <em>Knowledge Group</em></h1>
+    <p>Empowering Ahmedabad's students since 2010</p>
+    <div class="breadcrumb"><a href="/">Home</a> <i class="fas fa-chevron-right"></i> About</div>
+</div>
+<section class="about-section">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-text">
+                <div class="tag">Our Story</div>
+                <h2>Building a <em>Legacy</em> of Academic Excellence</h2>
+                <p>Knowledge Group Tuition was founded in 2010 with a simple but powerful vision — to provide every student in Ahmedabad access to quality education that goes beyond rote learning.</p>
+                <p>Over the past 14 years, we have helped more than 1500 students achieve their academic goals. Our approach is built on strong fundamentals, regular practice, and genuine care for each student's growth.</p>
+                <p>We are not just a tuition centre — we are a community where students feel safe to ask questions, make mistakes, and grow into confident learners.</p>
+                <div class="about-highlights">
+                    <div class="highlight-item"><i class="fas fa-check-circle"></i><div><strong>CBSE & GSEB</strong><span>Board aligned curriculum for both boards</span></div></div>
+                    <div class="highlight-item"><i class="fas fa-check-circle"></i><div><strong>Doubt Clearing</strong><span>Dedicated sessions twice weekly</span></div></div>
+                    <div class="highlight-item"><i class="fas fa-check-circle"></i><div><strong>Study Material</strong><span>Comprehensive notes and practice papers</span></div></div>
+                    <div class="highlight-item"><i class="fas fa-check-circle"></i><div><strong>Online Portal</strong><span>Track results and attendance online</span></div></div>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="about-stat-card">
+                    <span>1500+</span>
+                    <p>Students have benefited from our programmes</p>
+                </div>
+                <div class="about-stat-card">
+                    <span>14+</span>
+                    <p>Years of Teaching Excellence</p>
+                </div>
+                <div class="about-stat-card">
+                    <span>98%</span>
+                    <p>Board Exam Pass Rate</p>
+                </div>
+                <div class="about-stat-card">
+                    <span>20+</span>
+                    <p>Expert Faculty Members</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if teachers %}
+<section class="teachers-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Our Faculty</span>
+            <h2>Meet Our <em>Expert Teachers</em></h2>
+            <p>Qualified, experienced, and passionate educators dedicated to your child's success.</p>
+        </div>
+        <div class="teachers-grid">
+            {% for teacher in teachers %}
+            <div class="teacher-card">
+                <div class="teacher-avatar">{{ teacher.name[0] }}</div>
+                <h3>{{ teacher.name }}</h3>
+                <span class="teacher-subject">{{ teacher.subject }}</span>
+                <p>{{ teacher.qualification }}</p>
+                <p class="teacher-exp"><i class="fas fa-briefcase"></i> {{ teacher.experience }}+ years experience</p>
+                {% if teacher.bio %}<p style="margin-top:10px;font-size:13px;color:var(--text-muted);">{{ teacher.bio }}</p>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="cta-section">
+    <div class="container">
+        <h2>Want to <em>Join</em> Our Team?</h2>
+        <p>We are always looking for passionate teachers to join our faculty.</p>
+        <a href="{{ url_for('contact') }}" class="btn-light">Get in Touch</a>
+    </div>
+</section>
+{% endblock %}

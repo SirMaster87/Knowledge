@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - Knowledge Group{% endblock %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+{% block content %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('dashboard') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Admin Dashboard</div>
+        <div class="dashboard-subtitle">Overview of Knowledge Group Tuition</div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(26,35,126,0.1);color:var(--primary)"><i class="fas fa-users"></i></div>
+                <div><div class="stat-card-num">{{ student_count }}</div><div class="stat-card-label">Total Students</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(46,125,50,0.1);color:var(--success)"><i class="fas fa-book-open"></i></div>
+                <div><div class="stat-card-num">{{ enrollment_count }}</div><div class="stat-card-label">Enrollments</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(255,111,0,0.1);color:var(--accent)"><i class="fas fa-chalkboard"></i></div>
+                <div><div class="stat-card-num">{{ course_count }}</div><div class="stat-card-label">Active Courses</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(198,40,40,0.1);color:var(--danger)"><i class="fas fa-clock"></i></div>
+                <div><div class="stat-card-num">{{ pending_requests }}</div><div class="stat-card-label">Pending Requests</div></div>
+            </div>
+        </div>
+        <div class="grid-2">
+            <!-- Pending Enrollments -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-clipboard-list" style="color:var(--accent)"></i> Pending Enrollments</h3>
+                    <a href="{{ url_for('admin_enrollments') }}" class="btn-sm btn-info-btn">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if recent_requests %}
+                    {% for req in recent_requests %}
+                    <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <div>
+                                <strong style="font-size:14px">{{ req.name }}</strong>
+                                <div style="font-size:12px;color:var(--text-muted)">{{ req.course_name }} · {{ req.phone }}</div>
+                            </div>
+                            <div style="display:flex;gap:6px">
+                                <a href="{{ url_for('approve_enrollment', req_id=req.id) }}" class="btn-sm btn-success">✓</a>
+                                <a href="{{ url_for('reject_enrollment', req_id=req.id) }}" class="btn-sm btn-danger-btn">✗</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="color:var(--text-muted);font-size:14px">No pending enrollment requests.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Unread Messages -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-envelope" style="color:var(--primary)"></i> Unread Messages</h3>
+                    <a href="{{ url_for('admin_messages') }}" class="btn-sm btn-info-btn">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if unread_messages %}
+                    {% for msg in unread_messages %}
+                    <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+                        <strong style="font-size:14px">{{ msg.name }}</strong>
+                        <div style="font-size:12px;color:var(--text-muted)">{{ msg.email }}</div>
+                        <p style="font-size:13px;margin-top:4px;color:var(--text)">{{ msg.message[:80] }}{% if msg.message|length > 80 %}...{% endif %}</p>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="color:var(--text-muted);font-size:14px">No unread messages.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header"><h3>Quick Actions</h3></div>
+            <div class="card-body" style="display:flex;flex-wrap:wrap;gap:12px">
+                <a href="{{ url_for('admin_courses') }}" class="btn-sm btn-info-btn"><i class="fas fa-plus"></i> Add Course</a>
+                <a href="{{ url_for('admin_teachers') }}" class="btn-sm btn-info-btn"><i class="fas fa-plus"></i> Add Teacher</a>
+                <a href="{{ url_for('admin_results') }}" class="btn-sm btn-success"><i class="fas fa-plus"></i> Add Result</a>
+                <a href="{{ url_for('admin_announcements') }}" class="btn-sm btn-success"><i class="fas fa-plus"></i> Post Announcement</a>
+                <a href="{{ url_for('admin_enrollments') }}" class="btn-sm btn-danger-btn"><i class="fas fa-clock"></i> Review Enrollments</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

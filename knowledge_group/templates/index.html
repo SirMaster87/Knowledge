@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% block title %}Knowledge Group Tuition - Ahmedabad's Premier Tuition Centre{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <div class="hero-badge">🎓 Ahmedabad's Most Trusted Tuition Centre</div>
+        <h1 class="hero-title">
+            Unlock Your Child's<br>
+            <em>Academic Potential</em>
+        </h1>
+        <p class="hero-desc">Expert coaching for Std 6–10 students. Small batches, personalised attention, and proven results since 2010.</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('enroll') }}" class="btn-primary">Enroll Today <i class="fas fa-arrow-right"></i></a>
+            <a href="{{ url_for('courses') }}" class="btn-secondary">View Courses</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat"><span class="stat-num">1500+</span><span class="stat-label">Students</span></div>
+            <div class="stat-div"></div>
+            <div class="stat"><span class="stat-num">14+</span><span class="stat-label">Years</span></div>
+            <div class="stat-div"></div>
+            <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Pass Rate</span></div>
+            <div class="stat-div"></div>
+            <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Expert Faculty</span></div>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="hero-card hero-card-1">
+            <i class="fas fa-star text-yellow"></i>
+            <div>
+                <strong>Board Toppers</strong>
+                <small>Std 10 Results 2024</small>
+            </div>
+        </div>
+        <div class="hero-card hero-card-2">
+            <i class="fas fa-users text-blue"></i>
+            <div>
+                <strong>Small Batches</strong>
+                <small>Max 15 per batch</small>
+            </div>
+        </div>
+        <div class="hero-card hero-card-3">
+            <i class="fas fa-chart-line text-green"></i>
+            <div>
+                <strong>Score Improvement</strong>
+                <small>Avg +28% in 3 months</small>
+            </div>
+        </div>
+        <div class="hero-illustration">
+            <div class="hi-circle hi-c1"></div>
+            <div class="hi-circle hi-c2"></div>
+            <div class="hi-circle hi-c3"></div>
+            <div class="hi-icon"><i class="fas fa-graduation-cap"></i></div>
+        </div>
+    </div>
+</section>
+
+<!-- Announcements -->
+{% if announcements %}
+<section class="announcements-bar">
+    <div class="ann-label"><i class="fas fa-bullhorn"></i> Latest</div>
+    <div class="ann-ticker">
+        <div class="ann-track">
+            {% for a in announcements %}
+            <span class="ann-item">
+                <span class="ann-badge ann-badge-{{ a.category }}">{{ a.category|upper }}</span>
+                {{ a.title }}
+            </span>
+            {% endfor %}
+            {% for a in announcements %}
+            <span class="ann-item">
+                <span class="ann-badge ann-badge-{{ a.category }}">{{ a.category|upper }}</span>
+                {{ a.title }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Why Choose Us -->
+<section class="section why-us">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Why Knowledge Group?</span>
+            <h2>We Go Beyond <em>Regular Tuition</em></h2>
+            <p>Our approach combines rigorous academics with individual care to help every student thrive.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="--icon-color:#667eea"><i class="fas fa-chalkboard-teacher"></i></div>
+                <h3>Expert Faculty</h3>
+                <p>All teachers are qualified professionals with 8–15 years of teaching experience and subject mastery.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="--icon-color:#f093fb"><i class="fas fa-users-class"></i></div>
+                <h3>Small Batch Sizes</h3>
+                <p>Maximum 15 students per batch ensuring every child gets individual attention and doubt clearing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="--icon-color:#4facfe"><i class="fas fa-file-alt"></i></div>
+                <h3>Regular Testing</h3>
+                <p>Weekly tests, monthly evaluations and mock board exams to track progress and identify weak areas.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="--icon-color:#43e97b"><i class="fas fa-phone-volume"></i></div>
+                <h3>Parent Updates</h3>
+                <p>Regular parent-teacher meetings and WhatsApp updates so parents are always in the loop.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="--icon-color:#f7971e"><i class="fas fa-book-open"></i></div>
+                <h3>Study Material</h3>
+                <p>Comprehensive notes, practice papers and previous year board questions provided for all subjects.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="--icon-color:#ee0979"><i class="fas fa-headset"></i></div>
+                <h3>Doubt Sessions</h3>
+                <p>Dedicated doubt clearing sessions twice a week. No student leaves with unresolved questions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Preview -->
+<section class="section courses-preview">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Our Courses</span>
+            <h2>Find the Right <em>Batch for You</em></h2>
+            <p>Courses designed for Std 6 to 10, covering all major CBSE and GSEB subjects.</p>
+        </div>
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <div class="course-badge">{{ course.grade_level }}</div>
+                <h3>{{ course.name }}</h3>
+                <p>{{ course.description[:100] }}{% if course.description|length > 100 %}...{% endif %}</p>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> {{ course.schedule }}</span>
+                    {% if course.fees %}
+                    <span><i class="fas fa-rupee-sign"></i> ₹{{ "%.0f"|format(course.fees) }}/mo</span>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('enroll') }}" class="course-cta">Enroll Now</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-40">
+            <a href="{{ url_for('courses') }}" class="btn-primary">See All Courses <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Results Banner -->
+<section class="results-banner">
+    <div class="container">
+        <div class="results-content">
+            <div class="results-text">
+                <h2>Our Students Score <em>Higher</em></h2>
+                <p>Board exam results speak for themselves. Year after year, Knowledge Group students outperform their peers.</p>
+                <a href="{{ url_for('enroll') }}" class="btn-light">Start Your Journey</a>
+            </div>
+            <div class="results-stats">
+                <div class="res-stat"><span>94%</span><small>Average Score<br>Std 10 Math</small></div>
+                <div class="res-stat"><span>89%</span><small>Average Score<br>Std 10 Science</small></div>
+                <div class="res-stat"><span>50+</span><small>Students scored<br>above 90%</small></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+{% if testimonials %}
+<section class="section testimonials">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Testimonials</span>
+            <h2>What Our Students <em>Say</em></h2>
+        </div>
+        <div class="testimonials-grid">
+            {% for t in testimonials %}
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    {% for i in range(t.rating) %}<i class="fas fa-star"></i>{% endfor %}
+                </div>
+                <p>"{{ t.content }}"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">{{ t.student_name[0] }}</div>
+                    <div>
+                        <strong>{{ t.student_name }}</strong>
+                        <small>{{ t.grade }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to <em>Transform</em> Your Results?</h2>
+        <p>Join 1500+ students who have achieved academic excellence with Knowledge Group Tuition.</p>
+        <div class="cta-actions">
+            <a href="{{ url_for('enroll') }}" class="btn-primary btn-large">Enroll Now – Free Counselling</a>
+            <a href="tel:+919876543210" class="btn-outline-light btn-large"><i class="fas fa-phone"></i> Call Us</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

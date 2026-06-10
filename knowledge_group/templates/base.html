@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Knowledge Group Tuition{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=3">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                <div class="logo-icon">K</div>
+                <div class="logo-text">
+                    <span class="logo-main">Knowledge</span>
+                    <span class="logo-sub">Group Tuition</span>
+                </div>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('index') }}" {% if request.endpoint=='index' %}class="active" {% endif
+                        %}>Home</a></li>
+                <li><a href="{{ url_for('courses') }}" {% if request.endpoint=='courses' %}class="active" {% endif
+                        %}>Courses</a></li>
+                <li><a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active" {% endif
+                        %}>About</a></li>
+                <li><a href="{{ url_for('contact') }}" {% if request.endpoint=='contact' %}class="active" {% endif
+                        %}>Contact</a></li>
+                {% if 'user_id' in session %}
+                {% if session.role == 'admin' %}
+                <li><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
+                {% else %}
+                <li><a href="{{ url_for('student_dashboard') }}"><i class="fas fa-user-graduate"></i> My Portal</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}" class="btn-nav-outline">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}" class="btn-nav-outline">Login</a></li>
+                <li><a href="{{ url_for('enroll') }}" class="btn-nav-fill">Enroll Now</a></li>
+                {% endif %}
+            </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+            <i
+                class="fas {% if category=='success' %}fa-check-circle{% elif category=='danger' %}fa-exclamation-circle{% elif category=='warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+            {{ message }}
+            <button class="flash-close" onclick="this.parentElement.remove()">×</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="logo-icon">K</div>
+                    <div class="logo-text">
+                        <span class="logo-main">Knowledge</span>
+                        <span class="logo-sub">Group Tuition</span>
+                    </div>
+                </div>
+                <p>Empowering students to achieve academic excellence through quality education and dedicated
+                    mentorship.</p>
+                <div class="footer-social">
+
+                    <a href="https://www.instagram.com/knowledge_tuition_2013/" target="_blank"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/9106318485"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('courses') }}">Our Courses</a></li>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('enroll') }}">Enroll Now</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-courses">
+                <h4>Popular Courses</h4>
+                <ul>
+                    <li><a href="#">Mathematics Std 10</a></li>
+                    <li><a href="#">Science Std 10</a></li>
+                    <li><a href="#">Foundation Batch</a></li>
+                    <li><a href="#">English Communication</a></li>
+                    <li><a href="#">Social Science</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Knowledge Group Tuition<br> Opp.Gokul Society,
+                    Saiyedwadi<br>Vatva, Ahmedabad</p>
+                <p><i class="fas fa-phone"></i>95749 83414<br>91063 18485</p>
+                <p><i class="fas fa-envelope"></i> knowledgek2013@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Mon–Sat: 2 PM – 8 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Knowledge Group Tuition. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

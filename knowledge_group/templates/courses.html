@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Our Courses - Knowledge Group Tuition{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Our <em>Courses</em></h1>
+    <p>Comprehensive coaching for students across all major subjects</p>
+    <div class="breadcrumb"><a href="/">Home</a> <i class="fas fa-chevron-right"></i> Courses</div>
+</div>
+<section class="section">
+    <div class="container">
+        <div class="courses-grid">
+            {% for course in courses %}
+            <div class="course-card">
+                <div class="course-badge">{{ course.grade_level }}</div>
+                <h3>{{ course.name }}</h3>
+                <p>{{ course.description }}</p>
+                <div class="course-meta">
+                    <span><i class="fas fa-clock"></i> {{ course.schedule }}</span>
+                    {% if course.fees %}
+                    <span><i class="fas fa-rupee-sign"></i> ₹{{ "%.0f"|format(course.fees) }}/month</span>
+                    {% endif %}
+                    {% if course.teacher_name %}
+                    <span><i class="fas fa-user-tie"></i> {{ course.teacher_name }}</span>
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('enroll') }}" class="course-cta">Enroll in This Course</a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-40">
+            <p style="color:var(--text-muted);margin-bottom:20px;">Can't find the right batch? Contact us for custom scheduling.</p>
+            <a href="{{ url_for('contact') }}" class="btn-secondary">Contact Us</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

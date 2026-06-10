@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Enrollments - Admin{% endblock %}
+{% block content %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('enrollments') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Enrollment Requests</div>
+        <div class="dashboard-subtitle">Review and approve student enrollments</div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Course</th><th>Grade</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody>
+                    {% for req in requests %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ req.name }}</strong>{% if req.parent_name %}<br><small style="color:var(--text-muted)">Parent: {{ req.parent_name }}</small>{% endif %}</td>
+                        <td>{{ req.email }}</td>
+                        <td>{{ req.phone }}</td>
+                        <td>{{ req.course_name }}</td>
+                        <td>{{ req.grade }}</td>
+                        <td><span class="badge badge-{{ 'success' if req.status=='approved' else ('danger' if req.status=='rejected' else 'warning') }}">{{ req.status|title }}</span></td>
+                        <td>{{ req.created_at.strftime('%d %b %Y') if req.created_at else '—' }}</td>
+                        <td>
+                            {% if req.status == 'pending' %}
+                            <a href="{{ url_for('approve_enrollment', req_id=req.id) }}" class="btn-sm btn-success" data-confirm="Approve this enrollment request?"><i class="fas fa-check"></i> Approve</a>
+                            <a href="{{ url_for('reject_enrollment', req_id=req.id) }}" class="btn-sm btn-danger-btn" data-confirm="Reject this enrollment request?"><i class="fas fa-times"></i> Reject</a>
+                            {% else %}—{% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:32px">No enrollment requests found.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

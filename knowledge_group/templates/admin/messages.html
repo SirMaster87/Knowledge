@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Messages - Admin{% endblock %}
+{% block content %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('messages') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Contact Messages</div>
+        <div class="dashboard-subtitle">Messages from website contact form</div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Message</th><th>Date</th></tr></thead>
+                    <tbody>
+                    {% for msg in messages %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ msg.name }}</strong></td>
+                        <td>{{ msg.email }}</td>
+                        <td>{{ msg.phone or '—' }}</td>
+                        <td style="max-width:400px">{{ msg.message }}</td>
+                        <td>{{ msg.created_at.strftime('%d %b %Y') if msg.created_at else '—' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:32px">No messages received yet.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

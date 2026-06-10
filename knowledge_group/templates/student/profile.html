@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - Knowledge Group{% endblock %}
+{% from 'student/_sidebar.html' import student_sidebar %}
+{% block content %}
+<div class="dashboard-layout">
+    {{ student_sidebar('profile') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">My Profile</div>
+        <div class="dashboard-subtitle">Manage your personal information</div>
+        <div class="card" style="max-width:640px">
+            <div class="card-header"><h3>Edit Profile</h3></div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="form-group"><label>Full Name *</label><input type="text" name="name" value="{{ user.name }}" required></div>
+                        <div class="form-group"><label>Phone</label><input type="tel" name="phone" value="{{ user.phone or '' }}"></div>
+                    </div>
+                    <div class="form-group"><label>Email</label><input type="email" value="{{ user.email }}" disabled style="opacity:0.6;cursor:not-allowed"></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current Grade</label>
+                            <select name="grade">
+                                <option value="">Select</option>
+                                {% for g in ['Std 6','Std 7','Std 8','Std 9','Std 10'] %}
+                                <option {% if user.grade==g %}selected{% endif %}>{{ g }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group"><label>School Name</label><input type="text" name="school" value="{{ user.school or '' }}" placeholder="Your school name"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Parent / Guardian Name</label><input type="text" name="parent_name" value="{{ user.parent_name or '' }}"></div>
+                        <div class="form-group"><label>Parent's Phone</label><input type="tel" name="parent_phone" value="{{ user.parent_phone or '' }}"></div>
+                    </div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

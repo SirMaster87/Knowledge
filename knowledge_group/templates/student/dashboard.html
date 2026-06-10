@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard - Knowledge Group{% endblock %}
+{% from 'student/_sidebar.html' import student_sidebar %}
+{% block content %}
+<div class="dashboard-layout">
+    {{ student_sidebar('dashboard') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Welcome back, {{ session.name }}! 👋</div>
+        <div class="dashboard-subtitle">Here's an overview of your learning journey</div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(26,35,126,0.1);color:var(--primary)"><i class="fas fa-book-open"></i></div>
+                <div><div class="stat-card-num">{{ enrollments|length }}</div><div class="stat-card-label">Enrolled Courses</div></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(255,111,0,0.1);color:var(--accent)"><i class="fas fa-file-alt"></i></div>
+                <div><div class="stat-card-num">{{ results|length }}</div><div class="stat-card-label">Exams Taken</div></div>
+            </div>
+            {% if results %}
+            <div class="stat-card">
+                <div class="stat-card-icon" style="background:rgba(46,125,50,0.1);color:var(--success)"><i class="fas fa-percentage"></i></div>
+                <div>
+                    <div class="stat-card-num">
+                        {% set total_pct = namespace(val=0) %}
+                        {% for r in results %}{% set total_pct.val = total_pct.val + (r.marks_obtained / r.total_marks * 100) %}{% endfor %}
+                        {{ "%.0f"|format(total_pct.val / results|length) }}%
+                    </div>
+                    <div class="stat-card-label">Avg Score</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="grid-2">
+            <!-- Enrollments -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-graduation-cap" style="color:var(--primary)"></i> My Courses</h3>
+                    <a href="{{ url_for('courses') }}" class="btn-sm btn-info-btn">Browse More</a>
+                </div>
+                <div class="card-body">
+                    {% if enrollments %}
+                    {% for e in enrollments %}
+                    <div style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                        <div>
+                            <strong style="font-size:14px">{{ e.course_name }}</strong>
+                            <div style="font-size:12px;color:var(--text-muted);margin-top:2px"><i class="fas fa-clock"></i> {{ e.schedule }}</div>
+                        </div>
+                        <span class="badge badge-{{ 'success' if e.status=='active' else 'secondary' }}">{{ e.status|title }}</span>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="color:var(--text-muted);font-size:14px">You're not enrolled in any courses yet. <a href="{{ url_for('enroll') }}" style="color:var(--primary)">Enroll now →</a></p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Results -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-line" style="color:var(--accent)"></i> Recent Results</h3>
+                    <a href="{{ url_for('student_results') }}" class="btn-sm btn-info-btn">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if results %}
+                    {% for r in results %}
+                    {% set pct = (r.marks_obtained / r.total_marks * 100)|round %}
+                    <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                            <strong style="font-size:13px">{{ r.exam_name }}</strong>
+                            <span style="font-size:13px;font-weight:700;color:{{ 'var(--success)' if pct>=75 else ('var(--warning)' if pct>=50 else 'var(--danger)') }}">{{ r.marks_obtained }}/{{ r.total_marks }}</span>
+                        </div>
+                        <div style="background:var(--border);height:6px;border-radius:3px;overflow:hidden">
+                            <div style="height:100%;width:{{ pct }}%;background:{{ 'var(--success)' if pct>=75 else ('var(--warning)' if pct>=50 else 'var(--danger)') }};border-radius:3px;transition:width 1s ease"></div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">{{ pct }}% · {{ r.exam_date }}</div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="color:var(--text-muted);font-size:14px">No exam results available yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-bullhorn" style="color:var(--accent)"></i> Announcements</h3></div>
+            <div class="card-body">
+                {% if announcements %}
+                {% for a in announcements %}
+                <div style="padding:14px 0;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start">
+                    <span class="badge badge-{{ 'exam' if a.category=='exam' else ('warning' if a.category=='holiday' else ('danger' if a.category=='fee' else 'primary')) }}">{{ a.category|upper }}</span>
+                    <div>
+                        <strong style="font-size:14px">{{ a.title }}</strong>
+                        <p style="font-size:13px;color:var(--text-muted);margin-top:4px">{{ a.content }}</p>
+                        <small style="color:var(--text-light)">{{ a.created_at.strftime('%d %b %Y') if a.created_at else '' }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p style="color:var(--text-muted)">No announcements at this time.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

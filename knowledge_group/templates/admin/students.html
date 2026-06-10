@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Students - Admin{% endblock %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+{% block content %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('students') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">All Students ({{ students|length }})</div>
+        <div class="dashboard-subtitle">Manage student accounts</div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Grade</th><th>School</th><th>Joined</th></tr></thead>
+                    <tbody>
+                    {% for s in students %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ s.name }}</strong></td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone or '—' }}</td>
+                        <td>{{ s.grade or '—' }}</td>
+                        <td>{{ s.school or '—' }}</td>
+                        <td>{{ s.created_at.strftime('%d %b %Y') if s.created_at else '—' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:32px">No students found.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

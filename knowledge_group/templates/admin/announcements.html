@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Announcements - Admin{% endblock %}
+{% block content %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('announcements') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Announcements</div>
+        <div class="dashboard-subtitle">Post and manage announcements</div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-plus" style="color:var(--success)"></i> Post Announcement</h3></div>
+            <div class="card-body">
+                <form method="POST">
+                    <input type="hidden" name="action" value="add">
+                    <div class="form-row">
+                        <div class="form-group"><label>Title *</label><input type="text" name="title" required placeholder="Announcement title"></div>
+                        <div class="form-group"><label>Category *</label><select name="category" required><option value="general">General</option><option value="exam">Exam</option><option value="holiday">Holiday</option><option value="result">Result</option><option value="fee">Fee</option></select></div>
+                    </div>
+                    <div class="form-group"><label>Content *</label><textarea name="content" required rows="3" placeholder="Announcement details..."></textarea></div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-bullhorn"></i> Post Announcement</button>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>All Announcements</h3></div>
+            <div class="card-body">
+                {% for a in announcements %}
+                <div style="padding:16px;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                        <div style="flex:1">
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+                                <span class="badge badge-{{ 'exam' if a.category=='exam' else ('warning' if a.category=='holiday' else ('danger' if a.category=='fee' else 'primary')) }}">{{ a.category|upper }}</span>
+                                <span style="font-size:12px;color:var(--text-light)">{{ a.created_at.strftime('%d %b %Y') if a.created_at else '' }}</span>
+                            </div>
+                            <strong style="font-size:15px">{{ a.title }}</strong>
+                            <p style="font-size:14px;color:var(--text-muted);margin-top:6px">{{ a.content }}</p>
+                        </div>
+                        <form method="POST" style="display:inline">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="ann_id" value="{{ a.id }}">
+                            <button type="submit" class="btn-sm btn-danger-btn" data-confirm="Delete this announcement?"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <p style="color:var(--text-muted)">No announcements posted yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

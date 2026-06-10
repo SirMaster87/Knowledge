@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Results - Admin{% endblock %}
+{% block content %}
+{% from 'admin/_sidebar.html' import admin_sidebar %}
+<div class="dashboard-layout">
+    {{ admin_sidebar('results') }}
+    <div class="dashboard-content">
+        <div class="dashboard-title">Exam Results</div>
+        <div class="dashboard-subtitle">Add and manage student exam results</div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-plus" style="color:var(--success)"></i> Add Result</h3></div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="form-group"><label>Student *</label><select name="user_id" required><option value="">Select Student</option>{% for s in students %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select></div>
+                        <div class="form-group"><label>Course</label><select name="course_id"><option value="">Select Course</option>{% for c in courses %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Exam Name *</label><input type="text" name="exam_name" required placeholder="e.g. Unit Test 1, Half-Yearly"></div>
+                        <div class="form-group"><label>Exam Date *</label><input type="date" name="exam_date" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Marks Obtained *</label><input type="number" name="marks_obtained" step="0.01" required placeholder="75"></div>
+                        <div class="form-group"><label>Total Marks *</label><input type="number" name="total_marks" step="0.01" required placeholder="100"></div>
+                    </div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Add Result</button>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3>All Results</h3></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Student</th><th>Exam</th><th>Course</th><th>Marks</th><th>Percentage</th><th>Date</th></tr></thead>
+                    <tbody>
+                    {% for r in results %}
+                    {% set pct = (r.marks_obtained / r.total_marks * 100)|round %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ r.student_name }}</strong></td>
+                        <td>{{ r.exam_name }}</td>
+                        <td>{{ r.course_name or '—' }}</td>
+                        <td>{{ r.marks_obtained }} / {{ r.total_marks }}</td>
+                        <td><span class="badge badge-{{ 'success' if pct>=75 else ('warning' if pct>=50 else 'danger') }}">{{ pct }}%</span></td>
+                        <td>{{ r.exam_date }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:32px">No results added yet.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
